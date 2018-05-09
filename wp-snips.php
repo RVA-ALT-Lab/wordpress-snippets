@@ -76,3 +76,14 @@ function my_admin_bar_render() {
 add_action( 'wp_before_admin_bar_render', 'my_admin_bar_render' );
 
 
+//CHANGE WP JSON RETURNS TO > 99
+
+add_filter( 'rest_post_collection_params', 'big_json_change_post_per_page', 10, 1 );
+
+function big_json_change_post_per_page( $params ) {
+    if ( isset( $params['per_page'] ) ) {
+        $params['per_page']['maximum'] = 200;
+    }
+
+    return $params;
+}
