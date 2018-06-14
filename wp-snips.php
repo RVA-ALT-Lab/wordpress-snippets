@@ -87,3 +87,10 @@ function big_json_change_post_per_page( $params ) {
 
     return $params;
 }
+
+
+
+//ALT TEXT FOR THUMBNAILS 
+$thumbnail_id = get_post_thumbnail_id( $post->ID );
+$alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);   
+the_post_thumbnail( 'full', array( 'alt' => $alt ) ); ?>
