@@ -93,4 +93,28 @@ function big_json_change_post_per_page( $params ) {
 //ALT TEXT FOR THUMBNAILS 
 $thumbnail_id = get_post_thumbnail_id( $post->ID );
 $alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);   
-the_post_thumbnail( 'full', array( 'alt' => $alt ) ); ?>
+the_post_thumbnail( 'full', array( 'alt' => $alt ) ); 
+
+
+
+
+
+//add custom field (ACF in this case) to JSON endpoint for custom post type - faculty is the post type
+add_action( 'rest_api_init', 'add_faculty_type_to_json' );
+function add_faculty_type_to_json() {
+
+    register_rest_field(
+        'faculty',
+        'faculty_type',
+        array(
+            'get_callback'    => 'faculty_return_type',
+        )
+    );
+}
+
+// Return acf field staff_group
+function faculty_return_type( $object, $field_name, $request ) {
+    global $post;
+    $faculty_type = get_field('staff_group', $post->ID); 
+    return $faculty_type[0];
+}
