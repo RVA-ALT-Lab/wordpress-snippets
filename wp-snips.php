@@ -118,3 +118,19 @@ function faculty_return_type( $object, $field_name, $request ) {
     $faculty_type = get_field('staff_group', $post->ID); 
     return $faculty_type[0];
 }
+
+
+//prevent addition of terms to custom taxonomy from https://wordpress.stackexchange.com/questions/112686/how-to-prevent-new-terms-being-added-to-a-custom-taxonomy
+add_action( 'pre_insert_term', function ( $term, $taxonomy )
+{
+    return ( 'topics' === $taxonomy )
+        ? new WP_Error( 'term_addition_blocked', __( 'You cannot add terms to this taxonomy' ) )
+        : $term;
+}, 0, 2 );
+
+
+
+//add to taxonomy o post type arguments to remove from menu contruction view 
+ $args = array(
+'show_in_nav_menus' => false,
+)
