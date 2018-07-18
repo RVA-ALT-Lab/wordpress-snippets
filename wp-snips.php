@@ -158,3 +158,7 @@ add_action('manage_posts_custom_column', 'make_event_columns_content', 10, 2);
 //just for custom post type named workshop
 add_filter('manage_workshop_posts_columns', 'make_event_columns_head'); 
 add_action('manage_workshop_posts_custom_column', 'make_event_columns_content', 10, 2);
+
+
+//ACF allow us to see custom fields in editor view
+add_filter( 'acf/settings/remove_wp_meta_box', '__return_false' );
