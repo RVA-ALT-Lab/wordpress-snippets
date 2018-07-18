@@ -134,3 +134,27 @@ add_action( 'pre_insert_term', function ( $term, $taxonomy )
  $args = array(
 'show_in_nav_menus' => false,
 )
+
+
+ //add custom columns in editor list view based on https://code.tutsplus.com/articles/add-a-custom-column-in-posts-and-custom-post-types-admin-screen--wp-24934
+
+ // ADD NEW COLUMN w header
+function make_event_columns_head($defaults) {
+    $defaults['make_event'] = 'Make Event';
+    return $defaults;
+}
+ 
+// add the extra element
+function make_event_columns_content($column_name, $post_ID) {
+    if ($column_name == 'make_event') {
+       echo 'foo';
+    }
+}
+
+
+//for all posts
+add_filter('manage_posts_columns', 'make_event_columns_head'); 
+add_action('manage_posts_custom_column', 'make_event_columns_content', 10, 2);
+//just for custom post type named workshop
+add_filter('manage_workshop_posts_columns', 'make_event_columns_head'); 
+add_action('manage_workshop_posts_custom_column', 'make_event_columns_content', 10, 2);
