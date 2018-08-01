@@ -162,3 +162,13 @@ add_action('manage_workshop_posts_custom_column', 'make_event_columns_content', 
 
 //ACF allow us to see custom fields in editor view
 add_filter( 'acf/settings/remove_wp_meta_box', '__return_false' );
+
+
+//add custom thumb sizes to media insert options
+add_filter( 'image_size_names_choose', 'my_custom_sizes' );
+
+function my_custom_sizes( $sizes ) {
+    return array_merge( $sizes, array(
+        'your-custom-size' => __('Your Custom Size Name'),
+    ) );
+}
