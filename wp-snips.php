@@ -172,3 +172,16 @@ function my_custom_sizes( $sizes ) {
         'your-custom-size' => __('Your Custom Size Name'),
     ) );
 }
+
+
+//CUSTOM page template for custom post type from a plugin 
+function get_custom_post_type_template($single_template) {
+     global $post;
+
+     if ($post->post_type == '*********') {
+          $single_template = dirname( __FILE__ ) . '/*********.php';
+     }
+     return $single_template;
+}
+add_filter( 'single_template', 'get_custom_post_type_template' );   
+
