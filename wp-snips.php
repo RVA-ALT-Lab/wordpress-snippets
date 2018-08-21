@@ -1,3 +1,4 @@
+
 <?php 
 
 //hide admin bar for non-admin
@@ -214,3 +215,6 @@ function configure_tinymce($in) {
   }";
   return $in;
 }
+
+//SHOW HIDDEN CUSTOM FIELDS
+add_filter( 'is_protected_meta', '__return_false', 999 );
