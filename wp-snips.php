@@ -98,28 +98,6 @@ the_post_thumbnail( 'full', array( 'alt' => $alt ) );
 
 
 
-
-//add custom field (ACF in this case) to JSON endpoint for custom post type - faculty is the post type
-add_action( 'rest_api_init', 'add_faculty_type_to_json' );
-function add_faculty_type_to_json() {
-
-    register_rest_field(
-        'faculty',
-        'faculty_type',
-        array(
-            'get_callback'    => 'faculty_return_type',
-        )
-    );
-}
-
-// Return acf field staff_group
-function faculty_return_type( $object, $field_name, $request ) {
-    global $post;
-    $faculty_type = get_field('staff_group', $post->ID); 
-    return $faculty_type[0];
-}
-
-
 //prevent addition of terms to custom taxonomy from https://wordpress.stackexchange.com/questions/112686/how-to-prevent-new-terms-being-added-to-a-custom-taxonomy
 add_action( 'pre_insert_term', function ( $term, $taxonomy )
 {
@@ -249,6 +227,10 @@ function configure_tinymce($in) {
 }
 
 
+/*
+ACF LAND
+*/
+
 
 //ACF JSON SAVER
 add_filter('acf/settings/save_json', 'my_acf_json_save_point');
@@ -262,3 +244,54 @@ function my_acf_json_save_point( $path ) {
     return $path;
     
 }
+
+
+//add custom field (ACF in this case) to JSON endpoint for custom post type - faculty is the post type
+add_action( 'rest_api_init', 'add_faculty_type_to_json' );
+function add_faculty_type_to_json() {
+
+    register_rest_field(
+        'faculty',
+        'faculty_type',
+        array(
+            'get_callback'    => 'faculty_return_type',
+        )
+    );
+}
+
+// Return acf field staff_group
+function faculty_return_type( $object, $field_name, $request ) {
+    global $post;
+    $faculty_type = get_field('staff_group', $post->ID); 
+    return $faculty_type[0];
+}
+
+
+
+
+//SORT ACF ENTRIES BY PARTICULAR FIELD AUTOMATICALLY
+function sort_record_by_year( $value, $post_id, $field ) {
+    // vars
+    $order = array();
+    
+    // bail early if no value
+    if( empty($value) ) {
+        return $value;      
+    }
+    
+    // populate order
+    foreach( $value as $i => $row ) {
+        
+        $order[ $i ] = $row['field_5cf50f064b39c'];//field for sorting
+        
+    }
+    
+    // multisort
+    array_multisort( $order, SORT_DESC, $value );
+    
+    // return   
+    return $value;
+    
+}
+
+add_filter('acf/load_value/name=faculty_record', 'sort_record_by_year', 10, 3);//replace faculty record with your repeater/container field
