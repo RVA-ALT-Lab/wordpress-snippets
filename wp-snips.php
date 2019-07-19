@@ -1,7 +1,6 @@
 <?php 
 
 
-
 //menu style list pages for custom post types with hierarchy 
 wp_list_pages ( array(
         	'post_type' => 'the-post-type'
@@ -17,11 +16,12 @@ the_post_thumbnail( 'full', array( 'alt' => $alt ) );
 
 /*
 **
-MINIMAL DASHBOARD STUFF
+DASHBOARD STUFF
 **
 */
 
 
+//HIDE OR MINIMAL WP
 
 //hide posts from other authors for author level users
 function posts_for_current_author($query) {
@@ -105,6 +105,17 @@ function remove_admin_bar() {
 //add to taxonomy to post type arguments to remove from menu construction view 
  $args = array(
 'show_in_nav_menus' => false,
+
+
+//change default media library settings
+
+function better_default_image_size() {
+    // Set default values for the upload media box
+    update_option('image_default_align', 'center' );
+    update_option('image_default_size', 'large' );
+
+}
+add_action('after_setup_theme', 'better_default_image_size');
 
 
 /*------------------------------END DASHBOARD MINIMAL STUFF----------------------------------*/
